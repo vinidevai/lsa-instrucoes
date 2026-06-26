@@ -66,8 +66,8 @@ export default function Deck() {
 
   return (
     <div
-      className="relative h-[100svh] w-full overflow-hidden select-none"
-      style={{ backgroundColor: '#fff' }}
+      className="relative h-full w-full overflow-hidden select-none"
+      style={{ backgroundColor: C.bg }}
       onTouchStart={onTouchStart}
       onTouchEnd={onTouchEnd}
     >
@@ -112,8 +112,8 @@ function NavButton({ onClick, disabled, children, label }) {
       onClick={onClick}
       disabled={disabled}
       aria-label={label}
-      className="h-11 w-11 sm:h-12 sm:w-12 rounded-full flex items-center justify-center bg-white transition-all active:scale-95 disabled:opacity-35 disabled:cursor-not-allowed"
-      style={{ border: `1px solid ${C.line}`, boxShadow: '0 4px 14px rgba(0,0,0,.12)', color: C.navy }}
+      className="h-11 w-11 sm:h-12 sm:w-12 rounded-full flex items-center justify-center transition-all active:scale-95 disabled:opacity-35 disabled:cursor-not-allowed"
+      style={{ backgroundColor: C.surface, border: `1px solid ${C.line}`, boxShadow: `0 4px 14px ${C.shadow || 'rgba(0,0,0,.12)'}`, color: C.heading }}
     >
       {children}
     </button>

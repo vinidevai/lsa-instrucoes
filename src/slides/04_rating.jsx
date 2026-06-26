@@ -1,89 +1,67 @@
-import { Star, ThumbsDown, ThumbsUp, Brain, HandCoins, TriangleAlert } from 'lucide-react';
+import { useState } from 'react';
+import { AnimatePresence } from 'framer-motion';
+import { Star, Brain, HandCoins, TriangleAlert } from 'lucide-react';
 import Slide from '../components/Slide.jsx';
-import { Card, IconBadge, Frame } from '../components/ui.jsx';
+import { Card, IconBadge } from '../components/ui.jsx';
+import { usePick } from '../store.jsx';
 import { C } from '../theme.js';
-import rateImg from '../assets/rate-satisfaction.jpg';
-import reasonsBadImg from '../assets/reasons-dissatisfied.jpg';
-import reasonsGoodImg from '../assets/reasons-satisfied.jpg';
-import creditBanner from '../assets/credit-banner.png';
+import { SatisfactionScale, ReasonsCard, CreditBanner, RatingFlow } from '../lsa/LsaSim.jsx';
 
-/* 14 — Escala de avaliação */
+/* 14 — Escala de avaliação (interativa) */
 export function RateScale() {
-  const levels = [
-    { c: C.green, en: 'Very satisfied', pt: 'Muito satisfeito' },
-    { c: '#57A639', en: 'Somewhat satisfied', pt: 'Satisfeito' },
-    { c: C.grey, en: 'Neither / nor', pt: 'Neutro' },
-    { c: C.amber, en: 'Somewhat dissatisfied', pt: 'Insatisfeito' },
-    { c: C.red, en: 'Very dissatisfied', pt: 'Muito insatisfeito' },
-  ];
+  const t = usePick();
+  const [open, setOpen] = useState(false);
   return (
-    <Slide icon={Star} title="Avalie o lead: Rate this lead"
-      subtitle="Ao terminar o atendimento, avalie — sempre." accent={C.amber}>
+    <Slide icon={Star} title={t({ pt: 'Avalie o lead: Rate this lead', en: 'Rate the lead: Rate this lead' })}
+      subtitle={t({ pt: 'Tela interativa — clique para avaliar!', en: 'Interactive screen — click to rate!' })} accent={C.amber}>
       <div className="grid gap-7 lg:grid-cols-2 items-start">
         <div>
-          <p className="text-sm sm:text-base" style={{ color: C.ink }}>
-            Clique em <span className="font-bold" style={{ color: C.amber }}>Rate this lead</span> e diga o quão
-            satisfeita a empresa ficou com aquele lead. São 5 níveis:
+          <p className="text-sm sm:text-base" style={{ color: C.text }}>
+            {t({ pt: 'Ao terminar o atendimento, clique em ', en: 'When you finish handling the lead, click ' })}
+            <span className="font-bold" style={{ color: C.amber }}>Rate this lead</span>
+            {t({ pt: ' e diga o quão satisfeita a empresa ficou. São 5 níveis:', en: ' and say how satisfied the business was. There are 5 levels:' })}
           </p>
-          <div className="mt-4 flex flex-col gap-2.5">
-            {levels.map((l, i) => (
-              <div key={i} className="flex items-center gap-3">
-                <span className="h-4 w-4 rounded-full shrink-0" style={{ backgroundColor: l.c }} />
-                <span className="text-sm sm:text-base">
-                  <b style={{ color: C.navy }}>{l.en}</b>{' '}
-                  <span style={{ color: C.muted }}>· {l.pt}</span>
-                </span>
-              </div>
-            ))}
-          </div>
-          <Card tint={C.amberTint} border="#F3D8B0" className="mt-5 p-4 flex items-center gap-3">
+          <button onClick={() => setOpen(true)}
+            className="mt-4 inline-flex items-center gap-2 rounded-md px-4 py-2 text-sm font-semibold text-white transition-transform active:scale-95" style={{ backgroundColor: C.amber }}>
+            <Star size={16} /> Rate this lead
+          </button>
+          <Card tint={C.amberTint} border={C.amber} className="mt-5 p-4 flex items-center gap-3">
             <IconBadge icon={Star} color={C.amber} size="sm" />
             <p className="text-sm sm:text-base font-bold" style={{ color: C.amber }}>
-              Avalie TODOS os leads ao finalizar — bons e ruins.
+              {t({ pt: 'Avalie TODOS os leads ao finalizar — bons e ruins.', en: 'Rate EVERY lead when you finish — good and bad.' })}
             </p>
           </Card>
         </div>
-        <Frame src={rateImg} alt="Escala de satisfação do lead" className="max-w-sm mx-auto w-full" />
+        <SatisfactionScale />
       </div>
+      <AnimatePresence>{open && <RatingFlow onClose={() => setOpen(false)} />}</AnimatePresence>
     </Slide>
   );
 }
 
 /* 15 — Motivos de lead ruim */
 export function ReasonsBad() {
-  const reasons = [
-    'Fora da área de atendimento da empresa',
-    'Serviço que a empresa não oferece',
-    'A pessoa não estava pronta para contratar',
-    'Spam (robocall, trote, golpe, sem resposta)',
-    'Lead duplicado (a pessoa já tinha entrado em contato)',
-    'Procurando emprego ou tentando vender algo',
-  ];
+  const t = usePick();
   return (
-    <Slide icon={ThumbsDown} title="Por que NÃO ficou satisfeito? (lead ruim)" accent={C.red}>
+    <Slide icon={Star} title={t({ pt: 'Por que NÃO ficou satisfeito? (lead ruim)', en: 'Why are you NOT satisfied? (bad lead)' })} accent={C.red}>
       <div className="grid gap-7 lg:grid-cols-2 items-start">
         <div>
-          <p className="text-sm sm:text-base" style={{ color: C.ink }}>
-            Ao escolher uma carinha <span className="font-bold" style={{ color: C.red }}>insatisfeita</span>, o
-            Google pergunta o motivo. Você pode marcar <b>mais de um</b>:
+          <p className="text-sm sm:text-base" style={{ color: C.text }}>
+            {t({ pt: 'Ao escolher uma carinha ', en: 'When you pick a ' })}
+            <span className="font-bold" style={{ color: C.red }}>{t({ pt: 'insatisfeita', en: 'dissatisfied' })}</span>
+            {t({ pt: ' face, o Google pergunta o motivo. Você pode marcar mais de um:', en: ' face, Google asks the reason. You can select more than one:' })}
           </p>
-          <div className="mt-4 flex flex-col gap-2.5">
-            {reasons.map((r, i) => (
-              <div key={i} className="flex items-start gap-2.5">
-                <ThumbsDown size={18} color={C.red} className="mt-0.5 shrink-0" />
-                <span className="text-sm sm:text-base" style={{ color: C.ink }}>{r}</span>
-              </div>
-            ))}
-          </div>
-          <Card tint={C.redTint} border="#F2C7C3" className="mt-5 p-4">
-            <p className="text-sm sm:text-base" style={{ color: C.ink }}>
-              <span className="font-bold" style={{ color: C.red }}>Exemplo: </span>
-              alguém ligou só para procurar emprego → marque <b style={{ color: C.navy }}>Very dissatisfied</b> + o
-              motivo <span className="italic">“person seeking employment or trying to sell a product or service”.</span>
+          <Card tint={C.redTint} border={C.red} className="mt-5 p-4">
+            <p className="text-sm sm:text-base" style={{ color: C.text }}>
+              <span className="font-bold" style={{ color: C.red }}>{t({ pt: 'Exemplo: ', en: 'Example: ' })}</span>
+              {t({ pt: 'alguém ligou só para procurar emprego → marque ', en: 'someone called just looking for a job → choose ' })}
+              <b style={{ color: C.heading }}>Very dissatisfied</b>
+              {t({ pt: ' + o motivo ', en: ' + the reason ' })}
+              <span className="italic">“person seeking employment or trying to sell a product or service”.</span>
             </p>
           </Card>
         </div>
-        <Frame src={reasonsBadImg} alt="Motivos de insatisfação" className="max-w-xs mx-auto w-full" />
+        <ReasonsCard kind="neg" />
       </div>
     </Slide>
   );
@@ -91,41 +69,24 @@ export function ReasonsBad() {
 
 /* 16 — Motivos de lead bom */
 export function ReasonsGood() {
-  const reasons = [
-    ['Virou um cliente / contrato fechado', 'It converted into a booked customer'],
-    ['Pode virar cliente em breve', 'It could convert into a booked customer soon'],
-    ['É relevante para os serviços da empresa', 'It is relevant to the services provided'],
-    ['É um serviço de alto valor para a empresa', 'It is for a service that generates high value'],
-    ['Outro motivo (descreva manualmente)', 'Other (please specify)'],
-  ];
+  const t = usePick();
   return (
-    <Slide icon={ThumbsUp} title="Por que ficou satisfeito? (lead bom)" accent={C.green}>
+    <Slide icon={Star} title={t({ pt: 'Por que ficou satisfeito? (lead bom)', en: 'Why are you satisfied? (good lead)' })} accent={C.green}>
       <div className="grid gap-7 lg:grid-cols-2 items-start">
         <div>
-          <p className="text-sm sm:text-base" style={{ color: C.ink }}>
-            Para avaliações <span className="font-bold" style={{ color: C.green }}>positivas</span>, o Google
-            também pede o motivo. Escolha o que melhor descreve o resultado:
+          <p className="text-sm sm:text-base" style={{ color: C.text }}>
+            {t({ pt: 'Para avaliações ', en: 'For ' })}
+            <span className="font-bold" style={{ color: C.green }}>{t({ pt: 'positivas', en: 'positive' })}</span>
+            {t({ pt: ', o Google também pede o motivo. Escolha o que melhor descreve o resultado:', en: ' ratings, Google also asks the reason. Pick the one that best describes the outcome:' })}
           </p>
-          <div className="mt-4 flex flex-col gap-3">
-            {reasons.map(([pt, en], i) => (
-              <div key={i} className="flex items-start gap-2.5">
-                <ThumbsUp size={18} color={C.green} className="mt-0.5 shrink-0" />
-                <span className="text-sm sm:text-base leading-tight">
-                  <b style={{ color: C.ink }}>{pt}</b>
-                  <br />
-                  <span className="italic text-xs sm:text-sm" style={{ color: C.muted }}>{en}</span>
-                </span>
-              </div>
-            ))}
-          </div>
-          <Card tint={C.greenTint} border="#BFE3C9" className="mt-5 p-4">
-            <p className="text-sm sm:text-base" style={{ color: C.ink }}>
-              <span className="font-bold" style={{ color: C.green }}>Fechou contrato? Agendou visita? </span>
-              Marque o motivo certo — isso reforça o que é um bom lead para você.
+          <Card tint={C.greenTint} border={C.green} className="mt-5 p-4">
+            <p className="text-sm sm:text-base" style={{ color: C.text }}>
+              <span className="font-bold" style={{ color: C.green }}>{t({ pt: 'Fechou contrato? Agendou visita? ', en: 'Closed a deal? Scheduled a visit? ' })}</span>
+              {t({ pt: 'Marque o motivo certo — isso reforça o que é um bom lead para você.', en: 'Choose the right reason — it reinforces what a good lead means for you.' })}
             </p>
           </Card>
         </div>
-        <Frame src={reasonsGoodImg} alt="Motivos de satisfação" className="max-w-xs mx-auto w-full" />
+        <ReasonsCard kind="pos" />
       </div>
     </Slide>
   );
@@ -133,49 +94,39 @@ export function ReasonsGood() {
 
 /* 17 — Por que avaliar é tão importante (slide-chave) */
 export function WhyRating() {
+  const t = usePick();
   return (
-    <Slide icon={Star} title="Por que avaliar é tão importante"
-      subtitle="Avaliar traz dois ganhos diretos para o seu negócio." accent={C.amber}>
+    <Slide icon={Star} title={t({ pt: 'Por que avaliar é tão importante', en: 'Why rating matters so much' })}
+      subtitle={t({ pt: 'Avaliar traz dois ganhos diretos para o seu negócio.', en: 'Rating brings two direct gains for your business.' })} accent={C.amber}>
       <div className="grid gap-5 lg:grid-cols-2">
-        <Card tint={C.blueTint} border="#C6DBFB" className="p-5 sm:p-6">
+        <Card tint={C.blueTint} border={C.blue} className="p-5 sm:p-6">
           <div className="flex items-center gap-3">
             <IconBadge icon={Brain} color={C.blue} size="md" />
-            <h3 className="text-lg sm:text-xl font-extrabold" style={{ color: C.blueDk }}>
-              1. Melhora a inteligência dos anúncios
-            </h3>
+            <h3 className="text-lg sm:text-xl font-extrabold" style={{ color: C.blueDk }}>{t({ pt: '1. Melhora a inteligência dos anúncios', en: '1. Improves the ads’ intelligence' })}</h3>
           </div>
-          <p className="mt-3 text-sm sm:text-base leading-relaxed" style={{ color: C.ink }}>
-            Cada avaliação ensina a IA do Google quais leads realmente valem a pena para você. Com o tempo, os
-            anúncios atraem mais leads parecidos com os bons — e menos com os ruins. Resultado: mais qualidade e
-            menor custo por cliente.
+          <p className="mt-3 text-sm sm:text-base leading-relaxed" style={{ color: C.text }}>
+            {t({ pt: 'Cada avaliação ensina a IA do Google quais leads realmente valem a pena para você. Com o tempo, os anúncios atraem mais leads parecidos com os bons — e menos com os ruins. Resultado: mais qualidade e menor custo por cliente.', en: 'Each rating teaches Google’s AI which leads are truly worth it for you. Over time, the ads attract more leads like the good ones — and fewer like the bad ones. Result: more quality and lower cost per customer.' })}
           </p>
         </Card>
-        <Card tint={C.greenTint} border="#BFE3C9" className="p-5 sm:p-6">
+        <Card tint={C.greenTint} border={C.green} className="p-5 sm:p-6">
           <div className="flex items-center gap-3">
             <IconBadge icon={HandCoins} color={C.green} size="md" />
-            <h3 className="text-lg sm:text-xl font-extrabold" style={{ color: C.green }}>
-              2. Crédito por leads inválidos
-            </h3>
+            <h3 className="text-lg sm:text-xl font-extrabold" style={{ color: C.green }}>{t({ pt: '2. Crédito por leads inválidos', en: '2. Credit for invalid leads' })}</h3>
           </div>
-          <p className="mt-3 text-sm sm:text-base leading-relaxed" style={{ color: C.ink }}>
-            Ao avaliar com o motivo certo (fora da área, serviço não oferecido, spam, duplicado), o Google analisa
-            e pode conceder um crédito para usar nos próximos leads.
+          <p className="mt-3 text-sm sm:text-base leading-relaxed" style={{ color: C.text }}>
+            {t({ pt: 'Ao avaliar com o motivo certo (fora da área, serviço não oferecido, spam, duplicado), o Google analisa e pode conceder um crédito para usar nos próximos leads.', en: 'When you rate with the right reason (out of area, service not offered, spam, duplicate), Google reviews it and may grant a credit to use on future leads.' })}
           </p>
           <p className="mt-3 text-xs sm:text-sm italic" style={{ color: C.muted }}>
-            É assim que o crédito aparece no topo do inbox:
+            {t({ pt: 'É assim que o crédito aparece no topo do inbox:', en: 'This is how the credit shows at the top of the inbox:' })}
           </p>
-          <img src={creditBanner} alt="Banner de crédito do inbox" className="mt-2 w-full h-auto rounded-md"
-            style={{ border: `1px solid ${C.line}` }} />
+          <div className="mt-2"><CreditBanner /></div>
         </Card>
       </div>
-      <Card tint={C.amberTint} border="#F3D8B0" className="mt-5 p-4 sm:p-5 flex items-start gap-3">
+      <Card tint={C.amberTint} border={C.amber} className="mt-5 p-4 sm:p-5 flex items-start gap-3">
         <IconBadge icon={TriangleAlert} color={C.amber} size="sm" />
-        <p className="text-sm sm:text-base leading-relaxed" style={{ color: C.ink }}>
-          <span className="font-bold" style={{ color: C.amber }}>Importante: </span>
-          o crédito é um valor para abater nos próximos leads (não é dinheiro de volta na conta), e{' '}
-          <b>nem todo motivo gera crédito</b> — “não estava pronto para contratar”, por exemplo, ajuda o algoritmo,
-          mas normalmente não gera crédito. O Google decide caso a caso. Avalie sempre com honestidade e{' '}
-          <b>o quanto antes (há um prazo limitado).</b>
+        <p className="text-sm sm:text-base leading-relaxed" style={{ color: C.text }}>
+          <span className="font-bold" style={{ color: C.amber }}>{t({ pt: 'Importante: ', en: 'Important: ' })}</span>
+          {t({ pt: 'o crédito é um valor para abater nos próximos leads (não é dinheiro de volta na conta), e nem todo motivo gera crédito — “não estava pronto para contratar”, por exemplo, ajuda o algoritmo, mas normalmente não gera crédito. O Google decide caso a caso. Avalie sempre com honestidade e o quanto antes (há um prazo limitado).', en: 'the credit is an amount to offset future leads (not cash back to your account), and not every reason earns a credit — “not ready to book”, for example, helps the algorithm but usually doesn’t earn a credit. Google decides case by case. Always rate honestly and as soon as possible (there’s a limited window).' })}
         </p>
       </Card>
     </Slide>

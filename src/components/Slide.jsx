@@ -22,7 +22,7 @@ export default function Slide({
   return (
     <div
       className="slide-scroll h-full w-full overflow-y-auto"
-      style={{ backgroundColor: dark ? C.navy : '#fff' }}
+      style={{ backgroundColor: dark ? C.slideDark : C.bg }}
     >
       <div className="min-h-full w-full max-w-6xl mx-auto flex flex-col px-5 sm:px-8 md:px-12 lg:px-16 pt-7 md:pt-12 pb-24 md:pb-28">
         {title && (
@@ -31,7 +31,7 @@ export default function Slide({
             <div className="min-w-0">
               <h2
                 className="text-[22px] leading-tight sm:text-3xl md:text-4xl font-extrabold"
-                style={{ color: dark ? '#fff' : C.navy }}
+                style={{ color: dark ? '#fff' : C.heading }}
               >
                 {title}
               </h2>

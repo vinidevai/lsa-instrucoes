@@ -15,7 +15,7 @@ export function IconBadge({ icon: Icon, color = C.blue, size = 'md', className =
 }
 
 /* Cartão arredondado com leve sombra e borda. */
-export function Card({ children, tint = '#fff', border = C.line, className = '', style = {} }) {
+export function Card({ children, tint = C.surface, border = C.line, className = '', style = {} }) {
   return (
     <div
       className={`rounded-2xl shadow-sm ${className}`}
@@ -57,7 +57,7 @@ export function IconRow({ icon, color = C.blue, term, children, className = '' }
       <IconBadge icon={icon} color={color} size="sm" className="mt-0.5" />
       <p className="text-sm sm:text-base leading-snug" style={{ color: C.ink }}>
         {term && (
-          <span className="font-bold" style={{ color: C.navy }}>
+          <span className="font-bold" style={{ color: C.heading }}>
             {term}
             {' — '}
           </span>

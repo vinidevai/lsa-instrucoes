@@ -1,21 +1,65 @@
 @import "tailwindcss";
 
-/* Paleta da marca disponível como utilitários do Tailwind (ex.: text-navy).
-   As cores também ficam em src/theme.js para uso em estilos inline. */
-@theme {
-  --color-navy: #1E2761;
-  --color-navy2: #2A3570;
-  --color-ink: #202124;
-  --color-muted: #5F6368;
-  --color-brandblue: #1A73E8;
-  --color-brandblue-dk: #174EA6;
-  --color-brandgreen: #1E8E3E;
-  --color-brandamber: #E8710A;
-  --color-brandred: #D93025;
-  --color-ice: #CADCFC;
+/* ===== Tema (claro/escuro) via variáveis CSS =====
+   Os componentes leem estas cores por src/theme.js, então trocar o
+   data-theme no <html> re-tematiza tudo automaticamente. */
+:root,
+:root[data-theme="light"] {
+  --bg: #F3F5F9;
+  --surface: #FFFFFF;
+  --surface-2: #F4F7FC;
+  --text: #202124;
+  --heading: #1E2761;
+  --muted: #5F6368;
+  --line: #E4E8EF;
 
-  --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue",
-    Arial, "Noto Sans", sans-serif;
+  --slide-dark: #1E2761;   /* fundo dos slides "escuros" (capa/fim) */
+  --brand-navy: #1E2761;   /* preenchimento de selos/badges */
+  --brand-navy2: #2A3570;
+
+  --blue: #1A73E8;
+  --blue-dk: #174EA6;
+  --green: #1E8E3E;
+  --amber: #E8710A;
+  --red: #D93025;
+  --ice: #CADCFC;
+  --grey: #9AA0A6;
+
+  --blue-tint: #EAF1FE;
+  --green-tint: #E7F4EB;
+  --amber-tint: #FDF3E6;
+  --red-tint: #FCEBEA;
+
+  --shadow: rgba(16, 24, 40, 0.12);
+}
+
+:root[data-theme="dark"] {
+  --bg: #0E1320;
+  --surface: #161C2B;
+  --surface-2: #1E2536;
+  --text: #E6E8EE;
+  --heading: #FFFFFF;
+  --muted: #A2A9B6;
+  --line: #2A3346;
+
+  --slide-dark: #0A0F1C;
+  --brand-navy: #3A4690;
+  --brand-navy2: #2A3470;
+
+  --blue: #4E9BFF;
+  --blue-dk: #8AB4F8;
+  --green: #43B36A;
+  --amber: #F5A33D;
+  --red: #F0857C;
+  --ice: #BBD0FB;
+  --grey: #8A93A3;
+
+  --blue-tint: #172338;
+  --green-tint: #14271C;
+  --amber-tint: #2C2212;
+  --red-tint: #2C1714;
+
+  --shadow: rgba(0, 0, 0, 0.5);
 }
 
 html,
@@ -26,21 +70,23 @@ body,
 
 body {
   margin: 0;
-  font-family: var(--font-sans);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue",
+    Arial, "Noto Sans", sans-serif;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
-  background: #fff;
+  background: var(--bg);
+  color: var(--text);
 }
 
-/* Esconde a barra de rolagem interna dos slides sem perder o scroll no mobile */
 .slide-scroll {
   scrollbar-width: thin;
-  scrollbar-color: #cbd2da transparent;
+  scrollbar-color: var(--line) transparent;
 }
 .slide-scroll::-webkit-scrollbar {
-  width: 6px;
+  width: 7px;
+  height: 7px;
 }
 .slide-scroll::-webkit-scrollbar-thumb {
-  background: #cbd2da;
+  background: var(--line);
   border-radius: 9999px;
 }

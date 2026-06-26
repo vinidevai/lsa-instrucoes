@@ -1,22 +1,32 @@
-// Paleta de cores da marca (inspirada no Material/Google, com navy de base).
-// Usada em estilos inline para evitar classes dinâmicas do Tailwind.
+// As cores apontam para variáveis CSS (definidas em index.css), então o mesmo
+// código funciona nos temas claro e escuro. Trocar o data-theme no <html>
+// re-tematiza tudo. Usado em estilos inline pelos componentes.
 export const C = {
-  navy: '#1E2761',
-  navy2: '#2A3570',
-  ink: '#202124',
-  muted: '#5F6368',
-  blue: '#1A73E8',
-  blueDk: '#174EA6',
-  green: '#1E8E3E',
-  amber: '#E8710A',
-  red: '#D93025',
-  white: '#FFFFFF',
-  ice: '#CADCFC',
-  line: '#E4E8EF',
-  card: '#F4F7FC',
-  blueTint: '#EAF1FE',
-  greenTint: '#E7F4EB',
-  amberTint: '#FDF3E6',
-  redTint: '#FCEBEA',
-  grey: '#9AA0A6',
+  bg: 'var(--bg)',
+  surface: 'var(--surface)',
+  white: 'var(--surface)',
+  card: 'var(--surface-2)',
+  text: 'var(--text)',
+  ink: 'var(--text)',
+  heading: 'var(--heading)',
+  navyText: 'var(--heading)',
+  muted: 'var(--muted)',
+  line: 'var(--line)',
+
+  slideDark: 'var(--slide-dark)',
+  navy: 'var(--brand-navy)',
+  navy2: 'var(--brand-navy2)',
+
+  blue: 'var(--blue)',
+  blueDk: 'var(--blue-dk)',
+  green: 'var(--green)',
+  amber: 'var(--amber)',
+  red: 'var(--red)',
+  ice: 'var(--ice)',
+  grey: 'var(--grey)',
+
+  blueTint: 'var(--blue-tint)',
+  greenTint: 'var(--green-tint)',
+  amberTint: 'var(--amber-tint)',
+  redTint: 'var(--red-tint)',
 };
