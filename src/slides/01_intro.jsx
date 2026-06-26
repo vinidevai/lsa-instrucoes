@@ -1,0 +1,147 @@
+import {
+  Megaphone, Home, ListChecks, BadgeCheck, Search, DollarSign,
+  Inbox, Zap, Route, Reply, Phone, CalendarCheck, Star,
+} from 'lucide-react';
+import Slide from '../components/Slide.jsx';
+import { Card, IconBadge, NumberBadge } from '../components/ui.jsx';
+import { C } from '../theme.js';
+
+/* 1 — Capa */
+export function Cover() {
+  return (
+    <Slide variant="dark" contentClassName="flex flex-col justify-center">
+      <div className="relative overflow-hidden">
+        <Home
+          size={300}
+          color={C.ice}
+          className="pointer-events-none absolute -right-10 -bottom-24 opacity-10 hidden sm:block"
+        />
+        <div className="flex items-center gap-2.5 mb-5">
+          <IconBadge icon={Megaphone} color={C.blue} size="sm" shadow={false} />
+          <span className="text-[11px] sm:text-sm font-bold tracking-wide" style={{ color: C.ice }}>
+            GUIA PRÁTICO • GOOGLE LOCAL SERVICES ADS
+          </span>
+        </div>
+        <h1 className="text-5xl sm:text-6xl md:text-7xl font-extrabold text-white leading-[0.95]">
+          Inbox de Leads
+        </h1>
+        <p className="mt-4 text-xl sm:text-2xl md:text-3xl font-bold" style={{ color: '#FFC36B' }}>
+          Como gerenciar, responder e avaliar seus leads
+        </p>
+        <p className="mt-5 max-w-2xl text-sm sm:text-base md:text-lg leading-relaxed" style={{ color: C.ice }}>
+          Do primeiro contato ao agendamento — e como as suas avaliações melhoram os anúncios e ainda
+          geram créditos para os próximos leads.
+        </p>
+        <div className="mt-8 inline-flex items-center gap-2 rounded-full px-3.5 py-2 text-xs sm:text-sm"
+          style={{ backgroundColor: C.navy2, color: C.ice }}>
+          Use as setas <span className="font-bold">← →</span>, clique nos botões ou deslize para navegar
+        </div>
+      </div>
+    </Slide>
+  );
+}
+
+/* 2 — Agenda */
+export function Agenda() {
+  const items = [
+    'O que é o LSA e por que importa',
+    'O fluxo de um lead, do início ao fim',
+    'Como acessar o inbox',
+    'O dashboard e o que cada coluna significa',
+    'Leads em negrito: responda rápido',
+    'Conversar e ouvir gravações de chamadas',
+    'Marcar como agendado (Booked)',
+    'Avaliar o lead (rating) e escolher o motivo',
+    'Como o rating melhora os anúncios e gera créditos',
+  ];
+  return (
+    <Slide icon={ListChecks} title="O que você vai aprender" accent={C.blue}>
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-4 sm:gap-y-6 mt-2">
+        {items.map((t, i) => (
+          <div key={i} className="flex items-center gap-3">
+            <NumberBadge n={i + 1} color={i === 8 ? C.green : C.blue} />
+            <span className="text-sm sm:text-base md:text-lg" style={{ color: C.ink }}>{t}</span>
+          </div>
+        ))}
+      </div>
+    </Slide>
+  );
+}
+
+/* 3 — O que é o LSA */
+export function WhatIsLSA() {
+  const rows = [
+    { icon: Search, color: C.blue, h: 'Anúncios no topo do Google',
+      b: 'A sua empresa aparece no topo da busca local, com o selo Google Guaranteed — passando confiança para quem procura o serviço.' },
+    { icon: DollarSign, color: C.green, h: 'Você paga por lead, não por clique',
+      b: 'Cada contato — uma mensagem ou uma ligação — é um lead. Por isso, cada lead conta (e pode ser cobrado).' },
+    { icon: Inbox, color: C.amber, h: 'O inbox é onde tudo acontece',
+      b: 'É no inbox que você responde, acompanha, agenda e avalia cada lead recebido. Gerenciar bem = mais clientes.' },
+  ];
+  return (
+    <Slide icon={BadgeCheck} title="O que é o Google LSA — e por que importa" accent={C.blue}>
+      <div className="grid gap-5 lg:grid-cols-3">
+        <div className="lg:col-span-2 flex flex-col gap-4">
+          {rows.map((r, i) => (
+            <Card key={i} className="p-4 sm:p-5 flex items-start gap-4">
+              <IconBadge icon={r.icon} color={r.color} size="md" />
+              <div>
+                <h3 className="text-base sm:text-lg font-bold" style={{ color: C.navy }}>{r.h}</h3>
+                <p className="text-sm sm:text-[15px] mt-1 leading-snug" style={{ color: C.muted }}>{r.b}</p>
+              </div>
+            </Card>
+          ))}
+        </div>
+        <Card tint={C.navy} border={C.navy} className="p-6 flex flex-col justify-center">
+          <IconBadge icon={Zap} color={C.blue} size="md" shadow={false} />
+          <p className="mt-4 text-sm font-bold uppercase tracking-wide" style={{ color: C.ice }}>A regra de ouro</p>
+          <p className="mt-2 text-xl sm:text-2xl font-extrabold leading-tight text-white">
+            Responder rápido <span style={{ color: '#FFC36B' }}>+ avaliar sempre</span>
+          </p>
+          <p className="mt-2 text-base sm:text-lg" style={{ color: C.ice }}>
+            = mais clientes e menor custo por lead.
+          </p>
+        </Card>
+      </div>
+    </Slide>
+  );
+}
+
+/* 4 — O fluxo de um lead */
+export function Flow() {
+  const steps = [
+    { icon: Inbox, color: C.blue, t: 'Novo lead', d: 'Chega uma mensagem ou ligação.' },
+    { icon: Reply, color: C.blue, t: 'Responda rápido', d: 'Atenda quem está em negrito.' },
+    { icon: Phone, color: C.blue, t: 'Atenda / retorne', d: 'Converse ou ouça a gravação.' },
+    { icon: CalendarCheck, color: C.green, t: 'Marque Booked', d: 'Quando agendar ou fechar.' },
+    { icon: Star, color: C.amber, t: 'Avalie o lead', d: 'Dê o rating e o motivo.' },
+  ];
+  return (
+    <Slide icon={Route} title="O fluxo de um lead" subtitle="Cinco passos simples, do primeiro contato à avaliação." accent={C.blue}>
+      <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4 mt-2">
+        {steps.map((s, i) => (
+          <Card key={i} className="p-4 flex flex-row lg:flex-col items-center lg:text-center gap-3">
+            <div className="relative shrink-0">
+              <IconBadge icon={s.icon} color={s.color} size="md" />
+              <span className="absolute -top-1 -right-1 h-5 w-5 rounded-full text-[11px] font-bold text-white flex items-center justify-center"
+                style={{ backgroundColor: C.navy }}>{i + 1}</span>
+            </div>
+            <div>
+              <p className="font-bold text-sm sm:text-base" style={{ color: C.navy }}>{s.t}</p>
+              <p className="text-xs sm:text-sm" style={{ color: C.muted }}>{s.d}</p>
+            </div>
+          </Card>
+        ))}
+      </div>
+      <Card tint={C.amberTint} border="#F3D8B0" className="mt-6 p-4 sm:p-5 flex items-start gap-3">
+        <IconBadge icon={Zap} color={C.amber} size="sm" />
+        <p className="text-sm sm:text-base" style={{ color: C.ink }}>
+          E se o lead for inválido (fora da área, spam, sem relação com o serviço)?{' '}
+          <span className="font-bold" style={{ color: C.amber }}>
+            A sua avaliação pode virar crédito para os próximos leads — veremos isso no final.
+          </span>
+        </p>
+      </Card>
+    </Slide>
+  );
+}

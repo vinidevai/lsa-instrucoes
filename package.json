@@ -1,0 +1,28 @@
+{
+  "name": "lsa-instrucoes",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "homepage": "https://vinidevai.github.io/lsa-instrucoes",
+  "description": "Guia interativo do inbox de leads do Google Local Services Ads (LSA).",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist"
+  },
+  "dependencies": {
+    "framer-motion": "^12.42.0",
+    "lucide-react": "^1.21.0",
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.3.1",
+    "@vitejs/plugin-react": "^6.0.3",
+    "gh-pages": "^6.3.0",
+    "tailwindcss": "^4.3.1",
+    "vite": "^8.1.0"
+  }
+}

@@ -1,0 +1,46 @@
+@import "tailwindcss";
+
+/* Paleta da marca disponível como utilitários do Tailwind (ex.: text-navy).
+   As cores também ficam em src/theme.js para uso em estilos inline. */
+@theme {
+  --color-navy: #1E2761;
+  --color-navy2: #2A3570;
+  --color-ink: #202124;
+  --color-muted: #5F6368;
+  --color-brandblue: #1A73E8;
+  --color-brandblue-dk: #174EA6;
+  --color-brandgreen: #1E8E3E;
+  --color-brandamber: #E8710A;
+  --color-brandred: #D93025;
+  --color-ice: #CADCFC;
+
+  --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue",
+    Arial, "Noto Sans", sans-serif;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  background: #fff;
+}
+
+/* Esconde a barra de rolagem interna dos slides sem perder o scroll no mobile */
+.slide-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: #cbd2da transparent;
+}
+.slide-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+.slide-scroll::-webkit-scrollbar-thumb {
+  background: #cbd2da;
+  border-radius: 9999px;
+}
