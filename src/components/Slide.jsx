@@ -1,14 +1,5 @@
-import { IconBadge } from './ui.jsx';
 import { C } from '../theme.js';
 
-/*
- * Moldura padrão de um slide. É responsiva por padrão:
- * - ocupa a altura toda da tela e rola internamente se o conteúdo passar (mobile);
- * - centraliza o conteúdo num container com largura máxima;
- * - a barra de título (ícone + título + subtítulo) é opcional.
- *
- * variant: 'light' (fundo branco) ou 'dark' (fundo navy).
- */
 export default function Slide({
   variant = 'light',
   icon,
@@ -19,26 +10,37 @@ export default function Slide({
   contentClassName = '',
 }) {
   const dark = variant === 'dark';
+  const Icon = icon;
   return (
     <div
       className="slide-scroll h-full w-full overflow-y-auto"
       style={{ backgroundColor: dark ? C.slideDark : C.bg }}
     >
-      <div className="min-h-full w-full max-w-6xl mx-auto flex flex-col px-5 sm:px-8 md:px-12 lg:px-16 pt-7 md:pt-12 pb-24 md:pb-28">
+      <div className="min-h-full w-full max-w-6xl mx-auto flex flex-col px-5 sm:px-8 md:px-12 lg:px-16 pt-7 md:pt-10 pb-24 md:pb-28">
         {title && (
-          <header className="flex items-center gap-3 sm:gap-4 mb-6 md:mb-9">
-            {icon && <IconBadge icon={icon} color={accent} size="md" />}
-            <div className="min-w-0">
+          <header
+            className="flex items-start gap-3 mb-6 md:mb-8 pb-5 md:pb-7"
+            style={{ borderBottom: `1px solid ${dark ? 'rgba(255,255,255,.1)' : C.line}` }}
+          >
+            {Icon && (
+              <span
+                className="inline-flex items-center justify-center h-7 w-7 rounded-md shrink-0 mt-0.5"
+                style={{ backgroundColor: accent }}
+              >
+                <Icon size={14} color="#fff" strokeWidth={2.3} />
+              </span>
+            )}
+            <div className="min-w-0 flex-1">
               <h2
-                className="text-[22px] leading-tight sm:text-3xl md:text-4xl font-extrabold"
+                className="text-xl sm:text-2xl md:text-[30px] font-bold leading-tight"
                 style={{ color: dark ? '#fff' : C.heading }}
               >
                 {title}
               </h2>
               {subtitle && (
                 <p
-                  className="text-xs sm:text-sm md:text-base italic mt-1"
-                  style={{ color: dark ? C.ice : C.muted }}
+                  className="text-xs sm:text-[13px] mt-1.5"
+                  style={{ color: dark ? 'rgba(202,220,252,.65)' : C.muted }}
                 >
                   {subtitle}
                 </p>

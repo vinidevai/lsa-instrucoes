@@ -18,7 +18,7 @@ export function IconBadge({ icon: Icon, color = C.blue, size = 'md', className =
 export function Card({ children, tint = C.surface, border = C.line, className = '', style = {} }) {
   return (
     <div
-      className={`rounded-2xl shadow-sm ${className}`}
+      className={`rounded-xl shadow-sm ${className}`}
       style={{ backgroundColor: tint, border: `1px solid ${border}`, ...style }}
     >
       {children}

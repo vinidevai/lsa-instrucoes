@@ -100,7 +100,7 @@ export default function Deck() {
         </motion.div>
       </AnimatePresence>
 
-      <Controls index={index} N={N} go={go} goTo={goTo} />
+      <Controls index={index} N={N} go={go} />
     </div>
   );
 }
@@ -112,49 +112,30 @@ function NavButton({ onClick, disabled, children, label }) {
       onClick={onClick}
       disabled={disabled}
       aria-label={label}
-      className="h-11 w-11 sm:h-12 sm:w-12 rounded-full flex items-center justify-center transition-all active:scale-95 disabled:opacity-35 disabled:cursor-not-allowed"
-      style={{ backgroundColor: C.surface, border: `1px solid ${C.line}`, boxShadow: `0 4px 14px ${C.shadow || 'rgba(0,0,0,.12)'}`, color: C.heading }}
+      className="h-10 w-10 sm:h-11 sm:w-11 rounded-full flex items-center justify-center transition-all active:scale-95 disabled:opacity-25 disabled:cursor-not-allowed"
+      style={{ backgroundColor: C.surface, border: `1px solid ${C.line}`, color: C.heading }}
     >
       {children}
     </button>
   );
 }
 
-function Controls({ index, N, go, goTo }) {
+function Controls({ index, N, go }) {
   return (
-    <div className="absolute bottom-0 inset-x-0 z-30 flex items-center justify-between gap-3 px-4 sm:px-6 pb-4 pt-3 sm:pb-5">
+    <div className="absolute bottom-0 inset-x-0 z-30 flex items-center justify-between gap-3 px-4 sm:px-6 pb-4 pt-2 sm:pb-5">
       <NavButton onClick={() => go(-1)} disabled={index === 0} label="Slide anterior">
-        <ChevronLeft size={24} />
+        <ChevronLeft size={20} />
       </NavButton>
 
-      <div className="flex items-center gap-3">
-        {/* Pontos (desktop) */}
-        <div className="hidden md:flex items-center gap-1.5">
-          {Array.from({ length: N }).map((_, i) => (
-            <button
-              key={i}
-              type="button"
-              aria-label={`Ir para o slide ${i + 1}`}
-              onClick={() => goTo(i)}
-              className="h-2 rounded-full transition-all"
-              style={{
-                width: i === index ? 20 : 8,
-                backgroundColor: i === index ? C.blue : '#CBD2DA',
-              }}
-            />
-          ))}
-        </div>
-        {/* Contador */}
-        <span
-          className="text-xs sm:text-sm font-semibold tabular-nums px-2.5 py-1 rounded-full"
-          style={{ color: C.muted, backgroundColor: 'rgba(0,0,0,.04)' }}
-        >
-          {index + 1} / {N}
-        </span>
-      </div>
+      <span
+        className="text-xs font-medium tabular-nums px-3 py-1.5 rounded-full"
+        style={{ color: C.muted, backgroundColor: C.surface, border: `1px solid ${C.line}` }}
+      >
+        {index + 1} / {N}
+      </span>
 
       <NavButton onClick={() => go(1)} disabled={index === N - 1} label="Próximo slide">
-        <ChevronRight size={24} />
+        <ChevronRight size={20} />
       </NavButton>
     </div>
   );
