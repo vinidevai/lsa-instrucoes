@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
-  ArrowLeft, Eye, Archive, CalendarCheck, Star, X, Check, Hand,
+  ArrowLeft, Eye, Archive, Star, X, Check, Hand,
+  Play, Pause, Phone,
 } from 'lucide-react';
 import { C } from '../theme.js';
 import { usePick } from '../store.jsx';
@@ -23,16 +24,19 @@ const LEADS = [
     id: '7991864', phone: '(555) 027-5510', job: 'Roof repair', intent: 'Category',
     city: 'Fairview', type: 'Phone', charge: 'Not charged',
     received: 'Feb 27, 9:38 AM', last: 'Feb 27, 9:38 AM', unread: false,
+    callDuration: '1:23',
   },
   {
     id: '7767661', phone: '(555) 031-8842', job: 'Gutter replacement', intent: 'Category',
     city: 'Riverside', type: 'Phone', charge: 'Charged',
     received: 'Feb 18, 6:07 PM', last: 'Feb 19, 6:09 PM', unread: false,
+    callDuration: '2:07',
   },
   {
     id: '7449970', phone: '(555) 040-2281', job: 'Roof inspection', intent: 'Category',
     city: 'Greenville', type: 'Message', charge: 'Not charged',
     received: 'Jan 28, 6:08 PM', last: 'Jan 28, 6:08 PM', unread: false,
+    msg: 'Good afternoon, I need a quote for a roof inspection. What\'s your availability?',
   },
 ];
 
@@ -101,17 +105,134 @@ function Td({ children, bold }) {
   );
 }
 
+/* ----------- Guia numerado dos botões (faixa abaixo da barra azul) ----------- */
+function ActionGuide({ pick }) {
+  const items = [
+    {
+      n: '①', name: 'SHOW NUMBER',
+      desc: pick({ pt: 'Revela o telefone completo para você ligar de volta', en: 'Reveals the full phone number so you can call back' }),
+      color: C.blue,
+    },
+    {
+      n: '②', name: 'ARCHIVE',
+      desc: pick({ pt: 'Arquiva o lead da lista (histórico permanece)', en: 'Archives the lead from the list (history is kept)' }),
+      color: C.grey,
+    },
+    {
+      n: '③', name: 'MARK BOOKED',
+      desc: pick({ pt: 'Agendou ou fechou o serviço? Clique aqui!', en: 'Scheduled or closed the job? Click here!' }),
+      color: C.green,
+    },
+    {
+      n: '④', name: 'Rate this lead →',
+      desc: pick({ pt: 'Avalie a qualidade do lead — muito importante!', en: 'Rate the lead quality — very important!' }),
+      color: C.amber,
+    },
+  ];
+  return (
+    <div className="grid grid-cols-2 sm:grid-cols-4 gap-x-3 gap-y-2.5 px-3 py-3"
+      style={{ backgroundColor: C.card, borderBottom: `1px solid ${C.line}` }}>
+      {items.map((it) => (
+        <div key={it.n} className="flex items-start gap-1.5">
+          <span
+            className="shrink-0 mt-0.5 inline-flex items-center justify-center rounded text-[10px] font-bold leading-none px-1.5 py-0.5"
+            style={{ backgroundColor: it.color, color: '#fff', minWidth: 18 }}>
+            {it.n}
+          </span>
+          <div>
+            <p className="text-[11px] font-bold leading-none" style={{ color: C.heading }}>{it.name}</p>
+            <p className="text-[10px] mt-0.5 leading-snug" style={{ color: C.muted }}>{it.desc}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+/* ----------- Player de gravação para leads do tipo Phone ----------- */
+function PhoneCallSection({ lead, pick }) {
+  const [playing, setPlaying] = useState(false);
+  const duration = lead.callDuration || '1:45';
+  return (
+    <div className="mt-5">
+      <h4 className="font-bold text-sm sm:text-base" style={{ color: C.heading }}>Conversation</h4>
+      <div className="mt-2 rounded-xl overflow-hidden" style={{ border: `1px solid ${C.line}` }}>
+        {/* Cabeçalho da chamada */}
+        <div className="flex items-center gap-3 px-4 py-3" style={{ backgroundColor: C.card, borderBottom: `1px solid ${C.line}` }}>
+          <span className="h-9 w-9 rounded-full flex items-center justify-center shrink-0"
+            style={{ backgroundColor: C.blueTint }}>
+            <Phone size={16} color={C.blue} />
+          </span>
+          <div className="flex-1 min-w-0">
+            <p className="font-semibold text-sm" style={{ color: C.heading }}>
+              {pick({ pt: 'Ligação recebida', en: 'Incoming phone call' })}
+            </p>
+            <p className="text-xs" style={{ color: C.muted }}>{lead.received}</p>
+          </div>
+          <span className="text-xs font-semibold tabular-nums px-2.5 py-1 rounded-full"
+            style={{ backgroundColor: C.blueTint, color: C.blue }}>
+            {duration}
+          </span>
+        </div>
+
+        {/* Player de áudio */}
+        <div className="px-4 py-3" style={{ backgroundColor: C.surface }}>
+          <div className="flex items-center gap-3">
+            <button
+              onClick={() => setPlaying(p => !p)}
+              className="h-9 w-9 rounded-full flex items-center justify-center shrink-0 transition-transform active:scale-90"
+              style={{ backgroundColor: C.blue }}>
+              {playing
+                ? <Pause size={14} color="#fff" />
+                : <Play size={14} color="#fff" fill="#fff" />}
+            </button>
+            <div className="flex-1 h-1.5 rounded-full relative" style={{ backgroundColor: C.line }}>
+              <div
+                className="h-full rounded-full"
+                style={{
+                  width: playing ? '35%' : '0%',
+                  backgroundColor: C.blue,
+                  transition: playing ? 'width 30s linear' : 'width 0.3s ease',
+                }} />
+            </div>
+            <span className="text-xs tabular-nums shrink-0" style={{ color: C.muted }}>
+              {playing ? '0:29' : '0:00'} / {duration}
+            </span>
+          </div>
+
+          {/* Dica de uso */}
+          <div className="mt-3 flex items-start gap-2 rounded-lg px-3 py-2.5"
+            style={{ backgroundColor: C.amberTint }}>
+            <span className="text-sm shrink-0">💡</span>
+            <p className="text-xs leading-snug" style={{ color: C.text }}>
+              <span className="font-semibold" style={{ color: C.amber }}>
+                {pick({ pt: 'Como usar: ', en: 'How to use: ' })}
+              </span>
+              {pick({
+                pt: 'Clique no play para ouvir a gravação da ligação. Isso ajuda a entender o pedido do cliente antes de retornar — e a avaliar o lead com mais precisão.',
+                en: 'Click play to listen to the call recording. This helps you understand the customer\'s request before calling back — and to rate the lead more accurately.',
+              })}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 /* --------------------------- Lead detail ---------------------------- */
 export function LeadDetail({ lead = LEADS[0], onBack }) {
   const pick = usePick();
   const [revealed, setRevealed] = useState(false);
   const [archived, setArchived] = useState(false);
   const [booked, setBooked] = useState(false);
-  const [modal, setModal] = useState(null); // 'rate' | 'booked' | null
+  const [modal, setModal] = useState(null);
+
+  const isPhone = lead.type === 'Phone';
 
   const BarBtn = ({ onClick, children, primary }) => (
     <button onClick={onClick}
-      className="px-2.5 py-1.5 rounded-md text-xs sm:text-[13px] font-semibold whitespace-nowrap transition-colors"
+      className="px-2.5 py-1.5 rounded-md text-xs sm:text-[13px] font-semibold whitespace-nowrap transition-colors active:scale-95"
       style={primary
         ? { backgroundColor: '#fff', color: C.blue }
         : { color: '#fff', border: '1px solid rgba(255,255,255,.55)' }}>
@@ -121,24 +242,36 @@ export function LeadDetail({ lead = LEADS[0], onBack }) {
 
   return (
     <div className="rounded-xl overflow-hidden w-full" style={{ border: `1px solid ${C.line}`, backgroundColor: C.surface }}>
-      {/* Barra de ações (azul) */}
-      <div className="flex items-center gap-2 sm:gap-3 px-3 py-2.5 flex-wrap" style={{ backgroundColor: C.blue }}>
+
+      {/* ── Barra de ações (azul) ── */}
+      <div className="flex items-center gap-2 sm:gap-2.5 px-3 py-2.5 flex-wrap" style={{ backgroundColor: C.blue }}>
         {onBack && (
-          <button onClick={onBack} aria-label="Back" className="text-white/90 hover:text-white shrink-0"><ArrowLeft size={20} /></button>
+          <button onClick={onBack} aria-label="Back" className="text-white/90 hover:text-white shrink-0">
+            <ArrowLeft size={20} />
+          </button>
         )}
         <span className="text-white font-semibold text-sm sm:text-base">Potential Customer</span>
-        <span className="text-white/90 text-xs sm:text-sm tabular-nums">
+        <span className="text-white/80 text-xs sm:text-sm tabular-nums">
           {revealed ? lead.phone : lead.phone.replace(/\d(?=\d{0,3}$)/g, '•')}
         </span>
-        <div className="flex items-center gap-2 ml-auto">
-          <BarBtn onClick={() => setRevealed(true)}><Eye size={13} className="inline mr-1" />SHOW NUMBER</BarBtn>
-          <BarBtn onClick={() => setArchived(true)}><Archive size={13} className="inline mr-1" />ARCHIVE</BarBtn>
-          <BarBtn primary onClick={() => setModal('booked')}>MARK BOOKED</BarBtn>
+        <div className="flex items-center gap-1.5 ml-auto flex-wrap">
+          <BarBtn onClick={() => setRevealed(true)}>
+            <Eye size={11} className="inline mr-1" />① SHOW NUMBER
+          </BarBtn>
+          <BarBtn onClick={() => setArchived(true)}>
+            <Archive size={11} className="inline mr-1" />② ARCHIVE
+          </BarBtn>
+          <BarBtn primary onClick={() => setModal('booked')}>
+            ③ MARK BOOKED
+          </BarBtn>
         </div>
       </div>
 
+      {/* ── Guia numerado dos botões ── */}
+      <ActionGuide pick={pick} />
+
       <div className="p-4 sm:p-5">
-        {/* status helpers */}
+        {/* Feedback de status */}
         {(archived || booked) && (
           <div className="mb-3 text-xs sm:text-sm rounded-md px-3 py-1.5" style={{ backgroundColor: C.greenTint, color: C.green }}>
             {archived && pick({ pt: 'Lead arquivado (apenas demonstração).', en: 'Lead archived (demo only).' })}
@@ -146,16 +279,22 @@ export function LeadDetail({ lead = LEADS[0], onBack }) {
           </div>
         )}
 
+        {/* Lead summary + botão de rating */}
         <div className="flex items-start justify-between gap-3">
           <div>
             <h3 className="font-bold text-base sm:text-lg" style={{ color: C.heading }}>Lead summary</h3>
             <p className="text-xs" style={{ color: C.muted }}>Received on {lead.received}.</p>
           </div>
-          <button onClick={() => setModal('rate')} className="text-sm font-semibold hover:underline shrink-0" style={{ color: C.blue }}>
-            Rate this lead
+          <button
+            onClick={() => setModal('rate')}
+            className="inline-flex items-center gap-1.5 rounded-md px-3 py-1.5 text-xs sm:text-[13px] font-semibold shrink-0 transition-transform active:scale-95"
+            style={{ backgroundColor: C.amberTint, color: C.amber, border: `1px solid ${C.amber}` }}>
+            <Star size={13} />
+            ④ Rate this lead
           </button>
         </div>
 
+        {/* Campos do lead */}
         <dl className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-1.5 text-sm">
           <Field k="Status" v="Active" />
           <Field k="Charge status" v={<ChargePill value={lead.charge} />} />
@@ -167,17 +306,22 @@ export function LeadDetail({ lead = LEADS[0], onBack }) {
           <Field k="Search intent" v={lead.intent} />
         </dl>
 
-        {/* Conversation */}
-        <h4 className="mt-5 font-bold text-sm sm:text-base" style={{ color: C.heading }}>Conversation</h4>
-        <div className="mt-2 space-y-3">
-          <Bubble who="P" color="#F4663B" name="Potential customer" time={lead.received}>
-            {lead.msg || 'Hi, I would like to get a quote for my roof. Thanks!'}
-            <span className="opacity-70"> [Notes from LSA: This customer has requested a quote]</span>
-          </Bubble>
-          <Bubble who="U" color={C.blue} name="Your business" time={lead.received}>
-            Thanks for reaching out! Someone from our team will contact you shortly to discuss your project.
-          </Bubble>
-        </div>
+        {/* Conversation: Phone → player | Message → bolhas de texto */}
+        {isPhone ? (
+          <PhoneCallSection lead={lead} pick={pick} />
+        ) : (
+          <>
+            <h4 className="mt-5 font-bold text-sm sm:text-base" style={{ color: C.heading }}>Conversation</h4>
+            <div className="mt-2 space-y-3">
+              <Bubble who="P" color="#F4663B" name="Potential customer" time={lead.received}>
+                {lead.msg || 'Hi, I would like to get a quote for my roof. Thanks!'}
+              </Bubble>
+              <Bubble who="U" color={C.blue} name="Your business" time={lead.received}>
+                {pick({ pt: 'Olá! Claro 😊 Podemos passar quinta às 10h. Funciona pra você?', en: 'Hi! Sure 😊 We can stop by Thursday at 10am. Does that work?' })}
+              </Bubble>
+            </div>
+          </>
+        )}
       </div>
 
       <AnimatePresence>
