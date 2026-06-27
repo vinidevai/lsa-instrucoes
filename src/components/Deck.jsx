@@ -47,13 +47,27 @@ export default function Deck() {
   // preservando a rolagem vertical do slide)
   const touch = useRef(null);
   const onTouchStart = (e) => {
-    touch.current = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+    // Se o toque começou dentro de um container com scroll horizontal real,
+    // marca como bloqueado para não interceptar o gesto do usuário.
+    let locked = false;
+    let el = e.target;
+    while (el && el !== document.body) {
+      const { overflowX } = window.getComputedStyle(el);
+      if ((overflowX === 'auto' || overflowX === 'scroll') && el.scrollWidth > el.clientWidth + 4) {
+        locked = true;
+        break;
+      }
+      el = el.parentElement;
+    }
+    touch.current = { x: e.touches[0].clientX, y: e.touches[0].clientY, locked };
   };
   const onTouchEnd = (e) => {
     if (!touch.current) return;
-    const dx = e.changedTouches[0].clientX - touch.current.x;
-    const dy = e.changedTouches[0].clientY - touch.current.y;
-    if (Math.abs(dx) > 55 && Math.abs(dx) > Math.abs(dy) * 1.5) go(dx < 0 ? 1 : -1);
+    if (!touch.current.locked) {
+      const dx = e.changedTouches[0].clientX - touch.current.x;
+      const dy = e.changedTouches[0].clientY - touch.current.y;
+      if (Math.abs(dx) > 55 && Math.abs(dx) > Math.abs(dy) * 1.5) go(dx < 0 ? 1 : -1);
+    }
     touch.current = null;
   };
 
