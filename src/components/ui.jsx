@@ -1,3 +1,4 @@
+import { MousePointer2 } from 'lucide-react';
 import { C } from '../theme.js';
 
 /* Círculo colorido com ícone branco (Lucide) no centro. */
@@ -64,6 +65,19 @@ export function IconRow({ icon, color = C.blue, term, children, className = '' }
         )}
         {children}
       </p>
+    </div>
+  );
+}
+
+/* Banner de destaque para telas interativas. */
+export function InteractiveBanner({ children }) {
+  return (
+    <div
+      className="flex items-center gap-2.5 rounded-lg px-4 py-3 mb-5"
+      style={{ backgroundColor: C.blue }}
+    >
+      <MousePointer2 size={16} color="#fff" className="shrink-0" />
+      <span className="text-sm font-bold text-white">{children}</span>
     </div>
   );
 }

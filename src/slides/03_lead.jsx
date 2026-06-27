@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { AnimatePresence } from 'framer-motion';
 import { Contact, Reply, Headphones, CalendarCheck, Play, Lightbulb, TriangleAlert, Zap, MessageSquare, Brain, Mail, TrendingUp, CircleCheck } from 'lucide-react';
 import Slide from '../components/Slide.jsx';
-import { Card, IconBadge, Pill } from '../components/ui.jsx';
+import { Card, IconBadge, Pill, InteractiveBanner } from '../components/ui.jsx';
 import { usePick } from '../store.jsx';
 import { C } from '../theme.js';
 import { LeadDetail, MarkBookedFlow } from '../lsa/LsaSim.jsx';
@@ -17,8 +17,10 @@ export function Panel() {
     { tt: 'Rate this lead', color: C.amber, d: { pt: 'avalia o lead — muito importante!', en: 'rates the lead — very important!' } },
   ];
   return (
-    <Slide icon={Contact} title={t({ pt: 'Abrindo um lead: o painel', en: 'Opening a lead: the panel' })}
-      subtitle={t({ pt: 'Tela interativa — clique nos botões!', en: 'Interactive screen — click the buttons!' })} accent={C.blue}>
+    <Slide icon={Contact} title={t({ pt: 'Abrindo um lead: o painel', en: 'Opening a lead: the panel' })} accent={C.blue}>
+      <InteractiveBanner>
+        {t({ pt: '👆 Tela interativa — clique nos botões ①②③ e no ④ Rate this lead!', en: '👆 Interactive screen — click buttons ①②③ and ④ Rate this lead!' })}
+      </InteractiveBanner>
       <div className="grid gap-6 lg:grid-cols-2 items-start">
         <LeadDetail />
         <div>

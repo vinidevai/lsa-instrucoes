@@ -15,11 +15,7 @@ export default function Deck() {
   const [[index, dir], setState] = useState([0, 0]);
 
   const go = useCallback(
-    (d) =>
-      setState(([i]) => {
-        const ni = Math.min(Math.max(i + d, 0), N - 1);
-        return [ni, ni === i ? 0 : d];
-      }),
+    (d) => setState(([i]) => [((i + d) % N + N) % N, d]),
     [N],
   );
 
@@ -105,14 +101,13 @@ export default function Deck() {
   );
 }
 
-function NavButton({ onClick, disabled, children, label }) {
+function NavButton({ onClick, children, label }) {
   return (
     <button
       type="button"
       onClick={onClick}
-      disabled={disabled}
       aria-label={label}
-      className="h-10 w-10 sm:h-11 sm:w-11 rounded-full flex items-center justify-center transition-all active:scale-95 disabled:opacity-25 disabled:cursor-not-allowed"
+      className="h-10 w-10 sm:h-11 sm:w-11 rounded-full flex items-center justify-center transition-all active:scale-95"
       style={{ backgroundColor: C.surface, border: `1px solid ${C.line}`, color: C.heading }}
     >
       {children}
@@ -123,7 +118,7 @@ function NavButton({ onClick, disabled, children, label }) {
 function Controls({ index, N, go }) {
   return (
     <div className="absolute bottom-0 inset-x-0 z-30 flex items-center justify-between gap-3 px-4 sm:px-6 pb-4 pt-2 sm:pb-5">
-      <NavButton onClick={() => go(-1)} disabled={index === 0} label="Slide anterior">
+      <NavButton onClick={() => go(-1)} label="Slide anterior">
         <ChevronLeft size={20} />
       </NavButton>
 
@@ -134,7 +129,7 @@ function Controls({ index, N, go }) {
         {index + 1} / {N}
       </span>
 
-      <NavButton onClick={() => go(1)} disabled={index === N - 1} label="Próximo slide">
+      <NavButton onClick={() => go(1)} label="Próximo slide">
         <ChevronRight size={20} />
       </NavButton>
     </div>

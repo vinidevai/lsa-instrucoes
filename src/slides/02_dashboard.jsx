@@ -1,6 +1,6 @@
 import { LogIn, LayoutList, Table, Bell, Lightbulb, Search, TriangleAlert, Phone, Wrench, MapPin, MessageSquare, DollarSign, Clock, History, Hash, Zap, TrendingUp } from 'lucide-react';
 import Slide from '../components/Slide.jsx';
-import { Card, IconBadge, Pill, NumberBadge, IconRow } from '../components/ui.jsx';
+import { Card, IconBadge, Pill, NumberBadge, IconRow, InteractiveBanner } from '../components/ui.jsx';
 import { usePick } from '../store.jsx';
 import { C } from '../theme.js';
 import { LeadsTable, LsaSimulator, BoldRowsDemo, CreditBanner } from '../lsa/LsaSim.jsx';
@@ -64,16 +64,18 @@ export function Access() {
 export function DashboardOverview() {
   const t = usePick();
   return (
-    <Slide icon={LayoutList} title={t({ pt: 'Visão geral do dashboard', en: 'Dashboard overview' })}
-      subtitle={t({ pt: 'Tela interativa — pode clicar!', en: 'Interactive screen — go ahead and click!' })} accent={C.blue}>
+    <Slide icon={LayoutList} title={t({ pt: 'Visão geral do dashboard', en: 'Dashboard overview' })} accent={C.blue}>
       <div className="flex flex-col gap-3">
+        <InteractiveBanner>
+          {t({ pt: '👆 Tela interativa — clique em qualquer lead para abrir os detalhes!', en: '👆 Interactive screen — click any lead to open its details!' })}
+        </InteractiveBanner>
         <CreditBanner />
         <LsaSimulator />
         <p className="text-sm sm:text-base" style={{ color: C.muted }}>
           <span className="font-bold" style={{ color: C.heading }}>{t({ pt: 'Cada linha é um lead.', en: 'Each row is a lead.' })}</span>{' '}
           {t({
-            pt: 'No topo, o banner verde mostra o crédito previsto para o próximo mês (mais sobre isso no fim).',
-            en: 'At the top, the green banner shows the credit expected for next month (more on that at the end).',
+            pt: 'O banner verde no topo mostra o crédito previsto para o próximo mês.',
+            en: 'The green banner at the top shows the credit expected for next month.',
           })}
         </p>
       </div>

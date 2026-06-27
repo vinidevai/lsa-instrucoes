@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { AnimatePresence } from 'framer-motion';
 import { Star, Brain, HandCoins, TriangleAlert } from 'lucide-react';
 import Slide from '../components/Slide.jsx';
-import { Card, IconBadge } from '../components/ui.jsx';
+import { Card, IconBadge, InteractiveBanner } from '../components/ui.jsx';
 import { usePick } from '../store.jsx';
 import { C } from '../theme.js';
 import { SatisfactionScale, ReasonsCard, CreditBanner, RatingFlow } from '../lsa/LsaSim.jsx';
@@ -12,8 +12,10 @@ export function RateScale() {
   const t = usePick();
   const [open, setOpen] = useState(false);
   return (
-    <Slide icon={Star} title={t({ pt: 'Avalie o lead: Rate this lead', en: 'Rate the lead: Rate this lead' })}
-      subtitle={t({ pt: 'Tela interativa — clique para avaliar!', en: 'Interactive screen — click to rate!' })} accent={C.amber}>
+    <Slide icon={Star} title={t({ pt: 'Avalie o lead: Rate this lead', en: 'Rate the lead: Rate this lead' })} accent={C.amber}>
+      <InteractiveBanner>
+        {t({ pt: '👆 Tela interativa — clique em "Rate this lead" abaixo para experimentar!', en: '👆 Interactive screen — click "Rate this lead" below to try it out!' })}
+      </InteractiveBanner>
       <div className="grid gap-7 lg:grid-cols-2 items-start">
         <div>
           <p className="text-sm sm:text-base" style={{ color: C.text }}>

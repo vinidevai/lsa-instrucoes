@@ -37,12 +37,12 @@ export function Cover() {
   );
 }
 
-/* 2 — Agenda */
+/* 2 — Agenda (não usada no deck, mantida para referência) */
 export function Agenda() {
   const t = usePick();
   const items = [
     { pt: 'O que é o LSA e por que importa', en: 'What the LSA is and why it matters' },
-    { pt: 'O fluxo de um lead, do início ao fim', en: 'A lead’s journey, from start to finish' },
+    { pt: 'O fluxo de um lead, do início ao fim', en: "A lead's journey, from start to finish" },
     { pt: 'Como acessar o inbox', en: 'How to access the inbox' },
     { pt: 'O dashboard e o que cada coluna significa', en: 'The dashboard and what each column means' },
     { pt: 'Leads em negrito: responda rápido', en: 'Leads in bold: reply fast' },
@@ -65,7 +65,7 @@ export function Agenda() {
   );
 }
 
-/* 3 — O que é o LSA */
+/* 3 — O que é o LSA (não usada no deck, mantida para referência) */
 export function WhatIsLSA() {
   const t = usePick();
   const rows = [
@@ -119,7 +119,7 @@ export function Flow() {
     { icon: Star, color: C.amber, ti: { pt: 'Avalie o lead', en: 'Rate the lead' }, d: { pt: 'Dê o rating e o motivo.', en: 'Give the rating and reason.' } },
   ];
   return (
-    <Slide icon={Route} title={t({ pt: 'O fluxo de um lead', en: 'A lead’s journey' })}
+    <Slide icon={Route} title={t({ pt: 'O fluxo de um lead', en: "A lead's journey" })}
       subtitle={t({ pt: 'Cinco passos simples, do primeiro contato à avaliação.', en: 'Five simple steps, from first contact to rating.' })} accent={C.blue}>
       <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4 mt-2">
         {steps.map((s, i) => (
@@ -140,7 +140,7 @@ export function Flow() {
         <p className="text-sm sm:text-base" style={{ color: C.text }}>
           {t({ pt: 'E se o lead for inválido (fora da área, spam, sem relação com o serviço)? ', en: 'And what if the lead is invalid (out of area, spam, unrelated to the service)? ' })}
           <span className="font-bold" style={{ color: C.amber }}>
-            {t({ pt: 'A sua avaliação pode virar crédito para os próximos leads — veremos isso no final.', en: 'Your rating can turn into credit for future leads — we’ll see this at the end.' })}
+            {t({ pt: 'A sua avaliação pode virar crédito para os próximos leads.', en: 'Your rating can turn into credit for future leads.' })}
           </span>
         </p>
       </Card>
