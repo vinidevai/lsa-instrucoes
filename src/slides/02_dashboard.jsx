@@ -17,9 +17,16 @@ export function Access() {
     <Slide icon={LogIn} title={t({ pt: 'Acessando o inbox', en: 'Accessing the inbox' })} accent={C.blue}>
       <div className="grid gap-6 lg:gap-10 lg:grid-cols-2 items-start">
         <div>
-          <div className="inline-block rounded-full px-4 py-2 text-sm sm:text-base font-bold text-white break-all" style={{ backgroundColor: C.blue }}>
+          <a
+            href="https://ads.google.com/localservices/inbox"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm sm:text-base font-bold text-white break-all transition-opacity hover:opacity-85 active:opacity-70"
+            style={{ backgroundColor: C.blue }}
+          >
             ads.google.com/localservices/inbox
-          </div>
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="shrink-0 opacity-80"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>
+          </a>
           <div className="mt-5 flex flex-col gap-4">
             {steps.map((s, i) => (
               <div key={i} className="flex items-center gap-3">
